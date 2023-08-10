@@ -5,9 +5,15 @@
  */
 
 #include <zephyr/kernel.h>
+#include "drivers/button.h"
+
+void setup() {
+	initButton();
+}
 
 int main(void)
 {
+	setup();
 	printk("Hello World! %s\n", CONFIG_BOARD);
 	return 0;
 }
