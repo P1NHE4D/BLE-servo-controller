@@ -1,6 +1,0 @@
-/ {
-    status_led: status_led {
-        compatible = "controller";
-        gpios = <&gpio0 5 GPIO_ACTIVE_HIGH>
-    };
-};
