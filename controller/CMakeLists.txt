@@ -8,9 +8,5 @@ project(Controller
         LANGUAGES C
 )
 
-
-#FILE(GLOB app_sources src/*.c)
-#target_sources(app PRIVATE ${app_sources})
-
 add_subdirectory(drivers)
 add_subdirectory(src)
