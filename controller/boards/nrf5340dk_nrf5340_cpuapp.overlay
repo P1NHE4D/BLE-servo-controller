@@ -11,14 +11,6 @@
 // For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
 // You can also visit the nRF DeviceTree extension documentation at https://nrfconnect.github.io/vscode-nrf-connect/devicetree/nrfdevicetree.html
 
-/ {
-	status_led: status_led {
-		compatible = "status-led";
-                /* using built-in LED pin for demonstration */
-		gpios = <&gpio0 7 (GPIO_ACTIVE_LOW)>;
-	};
-};
-
 &i2c1 {
 	mpu6050@68 {
 		compatible = "invensense,mpu6050";

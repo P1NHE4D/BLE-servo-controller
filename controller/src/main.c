@@ -9,12 +9,9 @@
 #include <zephyr/devicetree.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
+#include <zephyr/bluetooth/bluetooth.h>
 
 #include "drivers/mpu6050.h"
-
-#if !DT_NODE_EXISTS(DT_NODELABEL(status_led))
-#error "Overlay for power output node not properly defined."
-#endif
 
 int setup() {
 	if (initMPU6050() != 0) {
