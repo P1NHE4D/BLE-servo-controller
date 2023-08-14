@@ -1,4 +1,4 @@
-#include "mpu6050.h"
+#include "drivers/mpu6050.h"
 
 const struct device *mpu6050;
 
