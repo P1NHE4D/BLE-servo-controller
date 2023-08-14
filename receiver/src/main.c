@@ -5,9 +5,18 @@
  */
 
 #include <zephyr/kernel.h>
+#include <zephyr/sys/printk.h>
+#include "servo.h"
 
 int main(void)
 {
-	printk("Hello World! %s\n", CONFIG_BOARD);
+	printk("Setting angle!");
+	setAngle(0);
+	k_sleep(K_SECONDS(2));
+	printk("Setting angle!");
+	setAngle(180);
+	k_sleep(K_SECONDS(2));
+	printk("Setting angle!");
+	setAngle(90);
 	return 0;
 }

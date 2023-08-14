@@ -1,0 +1,14 @@
+{
+    "nrf-connect.applications": [
+        "${workspaceFolder}/receiver",
+        "${workspaceFolder}/controller"
+    ],
+    "files.associations": {
+        "*.ts": "typescript",
+        "mpu6050.h": "c",
+        "kernel.h": "c",
+        "printk.h": "c",
+        "servo.h": "c",
+        "stdint.h": "c"
+    }
+}
