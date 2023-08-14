@@ -10,6 +10,7 @@
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/kernel.h>
 #include <zephyr/bluetooth/bluetooth.h>
+#include <dk_buttons_and_leds.h>
 
 #include "drivers/mpu6050.h"
 
@@ -20,13 +21,22 @@ int setup() {
 	return 0;
 }
 
+void error() {
+	dk_set_leds_state(DK_ALL_LEDS_MSK, DK_NO_LEDS_MSK);
+
+	while (true) {
+		k_sleep(K_MSEC(1000));
+	}
+}
+
 int main(void)
 {
+	int err = 0;
 	if (setup() != 0) {
 		return 1;
 	}
 
-	while(1) {
+	while(true) {
 		struct mpu6050_reading reading = readMPU6050();
 		if (reading.status != 0) {
 			break;
