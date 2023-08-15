@@ -11,18 +11,20 @@
 // For more help, browse the DeviceTree documentation at https://docs.zephyrproject.org/latest/guides/dts/index.html
 // You can also visit the nRF DeviceTree extension documentation at https://nrfconnect.github.io/vscode-nrf-connect/devicetree/nrfdevicetree.html
 
-&i2c1 {
+&i2c0 {
 	mpu6050@68 {
 		compatible = "invensense,mpu6050";
 		reg = <0x68>;
 		status = "okay";
-		int-gpios = <&gpio0 6 GPIO_ACTIVE_HIGH>;
+		int-gpios = <&gpio0 10 0>;
 	};
+
+	status = "okay";
 };
 
-&i2c1_default {
-	group2 {
-		psels = <NRF_PSEL(TWIM_SCL, 0, 4)>, <NRF_PSEL(TWIM_SDA, 0, 5)>;
+&i2c0_default {
+	group1 {
+		psels = <NRF_PSEL(TWIM_SDA, 0, 11)>, <NRF_PSEL(TWIM_SCL, 0, 12)>;
 		bias-pull-up;
 	};
 };

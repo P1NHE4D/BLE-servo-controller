@@ -16,7 +16,7 @@
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/addr.h>
 
-#include "drivers/mpu6050.h"
+#include "lib/accelerometer.h"
 
 LOG_MODULE_REGISTER(Servo_Controller, LOG_LEVEL_INF);
 
@@ -36,10 +36,6 @@ static const struct bt_data ad[] = {
 	// advertising packet data
 	BT_DATA(BT_DATA_NAME_COMPLETE, DEVICE_NAME, DEVICE_NAME_LEN)
 };
-
-static unsigned char url_data[] ={0x17,'/','/','a','c','a','d','e','m','y','.',
-                                 'n','o','r','d','i','c','s','e','m','i','.',
-                                 'c','o','m'};
 
 // scan response packet
 static const struct bt_data sd[] = {
@@ -65,7 +61,7 @@ int main(void)
 	err = dk_leds_init();
 	if (err) {
 		LOG_ERR("LEDs init failed (err %d)\n", err);
-		return;
+		return 1;
 	}
 
 	bt_addr_le_t addr;
@@ -93,6 +89,7 @@ int main(void)
 		return 1;
 	}
 	LOG_INF("Advertising sucessfully started\n");
+
 
 	while(true) {
 		struct mpu6050_reading reading = readMPU6050();

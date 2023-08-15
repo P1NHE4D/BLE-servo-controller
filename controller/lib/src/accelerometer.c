@@ -1,4 +1,4 @@
-#include "drivers/mpu6050.h"
+#include "lib/accelerometer.h"
 
 const struct device *mpu6050;
 

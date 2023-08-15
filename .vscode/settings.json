@@ -14,6 +14,7 @@
         "devicetree.h": "c",
         "dk_buttons_and_leds.h": "c",
         "bluetooth.h": "c",
-        "uuid.h": "c"
+        "uuid.h": "c",
+        "addr.h": "c"
     }
 }

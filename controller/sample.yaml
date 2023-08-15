@@ -1,9 +1,0 @@
-sample:
-  name: MPU6050 Sensor
-tests:
-  sample.sensor.mpu6050:
-    build_only: true
-    platform_allow: nrf5340dk_nrf5340
-    tags: sensors
-    integration_platforms:
-      - nrf5340dk_nrf5340
