@@ -15,6 +15,7 @@
 #include <zephyr/bluetooth/gap.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/addr.h>
+#include <zephyr/bluetooth/conn.h>
 
 #include "lib/accelerometer.h"
 
@@ -25,6 +26,8 @@ LOG_MODULE_REGISTER(Servo_Controller, LOG_LEVEL_INF);
 
 #define RUN_STATUS_LED DK_LED1
 #define RUN_LED_BLINK_INTERVAL 1000
+
+#define CONNECTION_STATUS_LED DK_LED2
 
 // advertising packet
 static const struct bt_data ad[] = {
@@ -40,6 +43,52 @@ static const struct bt_data ad[] = {
 // scan response packet
 static const struct bt_data sd[] = {
 	BT_DATA_BYTES(BT_DATA_UUID128_ALL, BT_UUID_128_ENCODE(0x00001523, 0x1212, 0xefde, 0x1523, 0x785feabcd123))
+};
+
+struct bt_conn *bt_connection = NULL;
+
+void on_connected(struct bt_conn *conn, uint8_t err)
+{
+    if (err) {
+        LOG_ERR("Connection error %d", err);
+        return;
+    }
+    LOG_INF("Connected");
+    bt_connection = bt_conn_ref(conn);
+
+	struct bt_conn_info info;
+	err = bt_conn_get_info(conn, &info);
+	if (err) {
+   		LOG_ERR("bt_conn_get_info() returned %d", err);
+   		return;
+	}
+	double connection_interval = info.le.interval*1.25; // in ms
+	uint16_t supervision_timeout = info.le.timeout*10; // in ms
+	LOG_INF("Connection parameters: interval %.2f ms, latency %d intervals, timeout %d ms", connection_interval, info.le.latency, supervision_timeout);
+
+
+
+    dk_set_led(CONNECTION_STATUS_LED, 1);
+}
+
+void on_disconnected(struct bt_conn *conn, uint8_t reason)
+{
+    LOG_INF("Disconnected. Reason %d", reason);
+    bt_conn_unref(bt_connection);
+
+    dk_set_led(CONNECTION_STATUS_LED, 0);
+}
+
+void on_le_param_updated(struct bt_conn *conn, uint16_t interval, uint16_t latency, uint16_t timeout) {
+	double connection_interval = interval*1.25;         // in ms
+    uint16_t supervision_timeout = timeout*10;          // in ms
+    LOG_INF("Connection parameters updated: interval %.2f ms, latency %d intervals, timeout %d ms", connection_interval, latency, supervision_timeout);
+}
+
+struct bt_conn_cb connection_callbacks = {
+    .connected              = on_connected,
+    .disconnected           = on_disconnected,
+	.le_param_updated		= on_le_param_updated,
 };
 
 int setup() {
@@ -81,6 +130,8 @@ int main(void)
 		return 1;
 	}
 	LOG_INF("Bluetooth initialized\n");
+
+	bt_conn_cb_register(&connection_callbacks);
 
 	err = bt_le_adv_start(BT_LE_ADV_CONN, ad, ARRAY_SIZE(ad), sd, ARRAY_SIZE(sd));
 
