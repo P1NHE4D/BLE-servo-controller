@@ -68,9 +68,9 @@ int initMPU6050() {
 		ag[0] += sensor_value_to_double(&accel[0]) / 16384.0;;
 		ag[1] += sensor_value_to_double(&accel[1]) / 16384.0;
 		ag[2] += sensor_value_to_double(&accel[2]) / 16384.0;
-		ag[3] += sensor_value_to_double(&gyro[0]) / 65.5;
-		ag[4] += sensor_value_to_double(&gyro[1]) / 65.5;
-		ag[5] += sensor_value_to_double(&gyro[2]) / 65.5;
+		ag[3] += sensor_value_to_double(&gyro[0]) / 131.0;
+		ag[4] += sensor_value_to_double(&gyro[1]) / 131.0;
+		ag[5] += sensor_value_to_double(&gyro[2]) / 131.0;
 		k_msleep(1);
 	}
 
@@ -120,9 +120,9 @@ int update() {
 	float accX = sensor_value_to_double(&accel[0]) / 16384.0 - accXoffset;
 	float accY = sensor_value_to_double(&accel[1]) / 16384.0 - accYoffset;
 	float accZ = sensor_value_to_double(&accel[2]) / 16384.0 - accZoffset;
-	float gyroX = sensor_value_to_double(&gyro[0]) / 65.5 - gyroXoffset;
-	float gyroY = sensor_value_to_double(&gyro[1]) / 65.5 - gyroYoffset;
-	float gyroZ = sensor_value_to_double(&gyro[2]) / 65.5 - gyroZoffset;
+	float gyroX = sensor_value_to_double(&gyro[0]) / 131.0 - gyroXoffset;
+	float gyroY = sensor_value_to_double(&gyro[1]) / 131.0 - gyroYoffset;
+	float gyroZ = sensor_value_to_double(&gyro[2]) / 131.0 - gyroZoffset;
 
 	float sgZ = accZ < 0 ? -1 : 1;
 	angleAccX =   atan2(accY, sgZ*sqrt(accZ*accZ + accX*accX)) * RAD_2_DEG;
