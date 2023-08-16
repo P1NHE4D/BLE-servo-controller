@@ -15,6 +15,10 @@
         "dk_buttons_and_leds.h": "c",
         "bluetooth.h": "c",
         "uuid.h": "c",
-        "addr.h": "c"
+        "addr.h": "c",
+        "gatt.h": "c",
+        "device.h": "c",
+        "hci.h": "c",
+        "stdio.h": "c"
     }
 }
