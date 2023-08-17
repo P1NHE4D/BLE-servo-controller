@@ -1,7 +1,8 @@
 {
     "nrf-connect.applications": [
         "${workspaceFolder}/receiver",
-        "${workspaceFolder}/controller"
+        "${workspaceFolder}/controller",
+        "${workspaceFolder}/actuator"
     ],
     "files.associations": {
         "*.ts": "typescript",
@@ -19,6 +20,8 @@
         "gatt.h": "c",
         "device.h": "c",
         "hci.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "act_svc.h": "c",
+        "log.h": "c"
     }
 }
