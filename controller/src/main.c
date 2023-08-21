@@ -49,6 +49,7 @@ LOG_MODULE_REGISTER(Servo_Controller, LOG_LEVEL_DBG);
 #define NOTIFY_INTERVAL 50
 
 static K_SEM_DEFINE(mpu_init_ok, 0, 1);
+static K_SEM_DEFINE(notify_lock, 1, 1);
 
 static bool notify_mpu6050_enabled;
 
@@ -130,7 +131,7 @@ int mpu6050_notify(int sensor_value) {
 		return -EACCES;
 	}
 
-	return bt_gatt_notify(NULL, &ctrl_svc.attrs[2], 
+	return bt_gatt_notify(NULL, &ctrl_svc.attrs[2],
 			      &sensor_value,
 			      sizeof(sensor_value));
 }
@@ -209,8 +210,9 @@ void update_thread(void)
 
 	while (true)
 	{
+		k_sem_take(&notify_lock, K_FOREVER);
 		update();
-		k_msleep(10);
+		k_sem_give(&notify_lock);
 	}
 }
 
@@ -218,11 +220,13 @@ void update_thread(void)
 
 void send_data_thread(void) {
 	while(true) {
+		k_sem_take(&notify_lock, K_FOREVER);
 		int roll = (int)getRoll();
 		int rc = mpu6050_notify(roll);
 		if (rc) {
 			LOG_ERR("Notify failed (error %d)\n", rc);
 		}
+		k_sem_give(&notify_lock);
 		k_sleep(K_MSEC(NOTIFY_INTERVAL));
 	}
 }
